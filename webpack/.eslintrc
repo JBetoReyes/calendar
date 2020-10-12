@@ -1,0 +1,35 @@
+{
+  "root": true,
+  "parserOptions": {
+    "ecmaVersion": 2021
+  },
+  "env": {
+    "node": true
+  },
+  "plugins": ["prettier", "import"],
+  "extends": ["eslint-recommended", "plugins:prettier/recommended"],
+  "rules": {
+    "import/extensions": [
+      // Sverity
+      "error",
+      // Enforces the use of extensions for all imports
+      // except packages imports
+      "ignorePackages",
+      {
+        "js": "never"
+      }
+    ],
+    "prettier/prettier": "error",
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-var-requires": "off"
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        // List of extensions that will parsed
+        // modules and inspected for exports
+        "extensions": [".js"]
+      }
+    }
+  }
+}

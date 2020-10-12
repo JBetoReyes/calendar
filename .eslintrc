@@ -1,0 +1,54 @@
+{
+  "root": true,
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
+    },
+    "ecmaVersion": 2021,
+    "sourceType": "module",
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["react", "@typescript-eslint/eslint-plugin", "prettier"],
+  "extends": [
+    "plugin:react/recommended",
+    "airbnb-typescript",
+    "plugin:prettier/recommended",
+    // Disables a few of the recommended rules from the
+    // previous, as those are already cover in typescript
+    // typechecker
+    "plugin:@typescript-eslint/eslint-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "rules": {
+    "import/extensions": [
+      // Severity
+      "error",
+      // Enforces the use of extensions for all imports
+      // except packages imports
+      {
+        "jsx": "never",
+        "js": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "prettier/prettier": "error",
+    "@typescript-eslint/interface-name-prefix": "off",
+    "react/jsx-one-expression-per-line": "off",
+    "react/jsx-props-no-spreading": "off",
+    "react/jsx-filename-extension": [
+      1,
+      { "extensions": [".js", ".jsx", ".ts", ".tsx"] }
+    ]
+  },
+  "settings": {
+    "import/resolver": {
+      "node": {
+        // List of extensions that will be parsed
+        // modules and inspected for exports
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}
