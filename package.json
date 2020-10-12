@@ -19,8 +19,13 @@
     "url": "https://github.com/JBetoReyes/calendar/issues"
   },
   "homepage": "https://github.com/JBetoReyes/calendar#readme",
-  "dependencies": {},
+  "dependencies": {
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1"
+  },
   "devDependencies": {
+    "@types/react": "^16.9.52",
+    "@types/react-dom": "^16.9.8",
     "@typescript-eslint/eslint-plugin": "^4.4.0",
     "@typescript-eslint/parser": "^4.4.0",
     "awesome-typescript-loader": "^5.2.1",
