@@ -1,7 +1,8 @@
 import React from 'react';
+import AppRouter from './components/routers/AppRouter';
 
 const App = (): JSX.Element => {
-  return <div>Hello World</div>;
+  return <AppRouter />;
 };
 
 export default App;
