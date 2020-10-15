@@ -9,6 +9,7 @@ module.exports = () => {
     output: {
       filename: 'app-[hash:6].js',
       path: resolve(rootPath, 'dist'),
+      // tells webpack where to look for the static assets
       publicPath: '/',
     },
     resolve: {
