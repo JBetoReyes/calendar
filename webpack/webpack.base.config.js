@@ -14,6 +14,9 @@ module.exports = () => {
     },
     resolve: {
       extensions: ['.ts', '.tsx', '.js', '.jsx'],
+      alias: {
+        '@styles': resolve(srcPath, 'styles')
+      }
     },
     plugins: [
       new HtmlPlugin({
