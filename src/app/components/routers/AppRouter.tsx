@@ -1,7 +1,8 @@
+/* eslint-disable import/no-named-as-default */
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import LoginScreen from '../auth/LoginScreen';
 import CalendarScreen from '../calendar/CalendarScreen';
+import LoginScreen from '../auth/LoginScreen';
 
 const AppRouter = (): JSX.Element => {
   return (
