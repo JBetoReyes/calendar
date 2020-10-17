@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Calendar as BigCalendar,
   Event,
   momentLocalizer,
+  View,
 } from 'react-big-calendar';
 import moment from 'moment';
 import Navbar from '../ui/Navbar';
@@ -23,6 +24,19 @@ const events: IAppCalendarEvent[] = [
 ];
 
 const CalendarScreen = (): JSX.Element => {
+  const storedView = (localStorage.getItem('view') || 'month') as View;
+  const [calendarView, setCalendarView] = useState<View>(storedView);
+  const onDoubleClick = (e: IAppCalendarEvent) => {
+    console.log(e);
+  };
+  const onSelectEvent = (e: IAppCalendarEvent) => {
+    console.log(e);
+  };
+  const onViewCahnge = (selectedView: View) => {
+    localStorage.setItem('view', selectedView);
+    setCalendarView(selectedView);
+    console.log(selectedView);
+  };
   return (
     <div className="calendar-screen">
       <Navbar />
@@ -31,6 +45,10 @@ const CalendarScreen = (): JSX.Element => {
         events={events}
         startAccessor="start"
         endAccessor="end"
+        onDoubleClickEvent={onDoubleClick}
+        onSelectEvent={onSelectEvent}
+        onView={onViewCahnge}
+        view={calendarView}
         components={{
           event: CalendarEvent,
         }}
