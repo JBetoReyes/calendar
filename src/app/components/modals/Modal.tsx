@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import './Modal.scss';
+import { AppChangeEvent, AppSubmitEvent } from 'src/typings/htmlEvents';
 
 const customStyles = {
   content: {
@@ -27,6 +28,13 @@ const Modal = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(initialEndDate.toDate());
+  const [form, setForm] = useState({
+    title: '',
+    notes: '',
+    startDate,
+    endDate,
+  });
+  const { title, notes } = form;
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -35,6 +43,16 @@ const Modal = () => {
   };
   const handleEndDateChange = (e: Date) => {
     setEndDate(e);
+  };
+  const handleInputChange = ({ target }: AppChangeEvent) => {
+    setForm((formData) => ({
+      ...formData,
+      [target.name]: target.value,
+    }));
+  };
+  const handleSubmit = (e: AppSubmitEvent) => {
+    e.preventDefault();
+    console.log(form);
   };
   return (
     <ReactModal
@@ -48,7 +66,7 @@ const Modal = () => {
     >
       <h1> New Event </h1>
       <hr />
-      <form className="container">
+      <form className="container" onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="startdate">
             Star date and time
@@ -84,6 +102,8 @@ const Modal = () => {
               placeholder="Title"
               name="title"
               autoComplete="off"
+              value={title}
+              onChange={handleInputChange}
             />
           </label>
           <small id="emailHelp" className="form-text text-muted">
@@ -97,6 +117,8 @@ const Modal = () => {
             placeholder="Notes"
             rows={5}
             name="notes"
+            value={notes}
+            onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
             Aditiona information
