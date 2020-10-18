@@ -12,6 +12,7 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './CalendarScreen.scss';
 import CalendarEvent from './CalendarEvent';
 import { IAppCalendarEvent } from './CalendarModel';
+import Modal from '../modals/Modal';
 
 const localizer = momentLocalizer(moment);
 
@@ -53,6 +54,7 @@ const CalendarScreen = (): JSX.Element => {
           event: CalendarEvent,
         }}
       />
+      <Modal />
     </div>
   );
 };
