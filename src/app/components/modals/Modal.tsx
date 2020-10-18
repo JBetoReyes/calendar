@@ -6,8 +6,9 @@ import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
-import './Modal.scss';
 import { AppChangeEvent, AppSubmitEvent } from 'src/typings/htmlEvents';
+import Swal from 'sweetalert2';
+import './Modal.scss';
 
 const customStyles = {
   content: {
@@ -28,13 +29,14 @@ const Modal = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(initialEndDate.toDate());
+  const [isTitleValid, setIsTitleValid] = useState(true);
   const [form, setForm] = useState({
     title: '',
     notes: '',
     startDate,
     endDate,
   });
-  const { title, notes } = form;
+  const { title, notes, startDate: start, endDate: end } = form;
   const handleCloseModal = () => {
     setIsOpen(false);
   };
@@ -52,7 +54,15 @@ const Modal = () => {
   };
   const handleSubmit = (e: AppSubmitEvent) => {
     e.preventDefault();
-    console.log(form);
+    const momentStart = moment(start);
+    const momentEnd = moment(end);
+    if (momentStart.isSameOrAfter(momentEnd)) {
+      return Swal.fire('Error', 'The end date cannot be before the start date');
+    }
+    if (title.length < 2) {
+      return setIsTitleValid(false);
+    }
+    setIsTitleValid(true);
   };
   return (
     <ReactModal
@@ -98,12 +108,13 @@ const Modal = () => {
             Title
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${!isTitleValid && 'is-invalid'}`}
               placeholder="Title"
               name="title"
               autoComplete="off"
               value={title}
               onChange={handleInputChange}
+              required
             />
           </label>
           <small id="emailHelp" className="form-text text-muted">
@@ -121,7 +132,7 @@ const Modal = () => {
             onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
-            Aditiona information
+            Aditional information
           </small>
         </div>
 
