@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
@@ -9,6 +10,9 @@ import moment from 'moment';
 import { AppChangeEvent, AppSubmitEvent } from 'src/typings/htmlEvents';
 import Swal from 'sweetalert2';
 import './Modal.scss';
+import { connect } from 'react-redux';
+import { IStoreState } from 'src/app/store/storeModel';
+import { closeModal } from '../../reducers/uiActions';
 
 const customStyles = {
   content: {
@@ -25,8 +29,22 @@ ReactModal.setAppElement('#app');
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const initialEndDate = now.clone().add(1, 'hours');
 
-const Modal = () => {
-  const [isOpen, setIsOpen] = useState(true);
+const mapDispatchToProps = {
+  closeModal,
+};
+
+const mapStateToProps = (state: IStoreState) => ({
+  isOpen: state.ui.modalOpen,
+});
+
+type DispatchPropsType = typeof mapDispatchToProps;
+type StatePropsType = ReturnType<typeof mapStateToProps>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type OwnPropsType = Record<string, any>;
+type PropsType = StatePropsType & DispatchPropsType & OwnPropsType;
+
+const Modal = (props: OwnPropsType) => {
+  const { isOpen, closeModal: dispatchCloseModal } = props as PropsType;
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(initialEndDate.toDate());
   const [isTitleValid, setIsTitleValid] = useState(true);
@@ -38,7 +56,8 @@ const Modal = () => {
   });
   const { title, notes, startDate: start, endDate: end } = form;
   const handleCloseModal = () => {
-    setIsOpen(false);
+    // setIsOpen(false);
+    dispatchCloseModal();
   };
   const handleStartDateChange = (e: Date) => {
     setStartDate(e);
@@ -118,7 +137,7 @@ const Modal = () => {
             />
           </label>
           <small id="emailHelp" className="form-text text-muted">
-            Breif description
+            Brief description
           </small>
         </div>
 
@@ -148,4 +167,12 @@ const Modal = () => {
 
 Modal.propTypes = {};
 
-export default Modal;
+export default connect<
+  StatePropsType,
+  DispatchPropsType,
+  OwnPropsType,
+  IStoreState
+>(
+  mapStateToProps,
+  mapDispatchToProps,
+)(Modal);

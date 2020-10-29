@@ -7,12 +7,15 @@ import {
   View,
 } from 'react-big-calendar';
 import moment from 'moment';
+import { connect, MapDispatchToProps } from 'react-redux';
+import { IStoreState } from 'src/app/store/storeModel';
 import Navbar from '../ui/Navbar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './CalendarScreen.scss';
 import CalendarEvent from './CalendarEvent';
 import { IAppCalendarEvent } from './CalendarModel';
 import Modal from '../modals/Modal';
+import { openModal } from '../../reducers/uiActions';
 
 const localizer = momentLocalizer(moment);
 
@@ -23,17 +26,26 @@ const events: IAppCalendarEvent[] = [
     end: moment().add(2, 'hours').toDate(),
   },
 ];
+const mapDispatchToProps = {
+  openModal,
+};
 
-const CalendarScreen = (): JSX.Element => {
+type DispatchPropsType = typeof mapDispatchToProps;
+
+type PropsType = DispatchPropsType;
+const CalendarScreen = ({
+  openModal: dispatchOpenModal,
+}: PropsType): JSX.Element => {
   const storedView = (localStorage.getItem('view') || 'month') as View;
   const [calendarView, setCalendarView] = useState<View>(storedView);
   const onDoubleClick = (e: IAppCalendarEvent) => {
     console.log(e);
+    dispatchOpenModal();
   };
   const onSelectEvent = (e: IAppCalendarEvent) => {
     console.log(e);
   };
-  const onViewCahnge = (selectedView: View) => {
+  const onViewChange = (selectedView: View) => {
     localStorage.setItem('view', selectedView);
     setCalendarView(selectedView);
     console.log(selectedView);
@@ -48,7 +60,7 @@ const CalendarScreen = (): JSX.Element => {
         endAccessor="end"
         onDoubleClickEvent={onDoubleClick}
         onSelectEvent={onSelectEvent}
-        onView={onViewCahnge}
+        onView={onViewChange}
         view={calendarView}
         components={{
           event: CalendarEvent,
@@ -61,4 +73,12 @@ const CalendarScreen = (): JSX.Element => {
 
 CalendarScreen.propTypes = {};
 
-export default CalendarScreen;
+// const mapStateToProps: MapStateToProps<IStoreState> = (state) => {
+//   state.ui;
+// };
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export default connect<null, DispatchPropsType, any, IStoreState>(
+  null,
+  mapDispatchToProps,
+)(CalendarScreen);
