@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import {
   Calendar as BigCalendar,
   Event,
@@ -16,6 +15,7 @@ import CalendarEvent from './CalendarEvent';
 import { IAppCalendarEvent } from './CalendarModel';
 import Modal from '../modals/Modal';
 import { openModal } from '../../reducers/uiActions';
+import { setActiveEvent } from '../../reducers/calendarActions';
 
 const localizer = momentLocalizer(moment);
 
@@ -28,6 +28,7 @@ const events: IAppCalendarEvent[] = [
 ];
 const mapDispatchToProps = {
   openModal,
+  setActiveEvent,
 };
 
 type DispatchPropsType = typeof mapDispatchToProps;
@@ -35,20 +36,19 @@ type DispatchPropsType = typeof mapDispatchToProps;
 type PropsType = DispatchPropsType;
 const CalendarScreen = ({
   openModal: dispatchOpenModal,
+  setActiveEvent: dispatchSetActiveEvent,
 }: PropsType): JSX.Element => {
   const storedView = (localStorage.getItem('view') || 'month') as View;
   const [calendarView, setCalendarView] = useState<View>(storedView);
   const onDoubleClick = (e: IAppCalendarEvent) => {
-    console.log(e);
     dispatchOpenModal();
   };
   const onSelectEvent = (e: IAppCalendarEvent) => {
-    console.log(e);
+    dispatchSetActiveEvent(e);
   };
   const onViewChange = (selectedView: View) => {
     localStorage.setItem('view', selectedView);
     setCalendarView(selectedView);
-    console.log(selectedView);
   };
   return (
     <div className="calendar-screen">
