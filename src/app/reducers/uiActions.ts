@@ -11,8 +11,14 @@ interface ICloseModal {
 
 export type UIActionsTypes = IOpenModal | ICloseModal;
 
-const openModal = (): UIActionsTypes => {
+export const openModal = (): UIActionsTypes => {
   return {
     type: OPEN_MODAL,
+  };
+};
+
+export const closeModal = (): UIActionsTypes => {
+  return {
+    type: CLOSE_MODAL,
   };
 };
