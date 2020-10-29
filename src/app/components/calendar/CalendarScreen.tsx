@@ -16,6 +16,7 @@ import { IAppCalendarEvent } from './CalendarModel';
 import Modal from '../modals/Modal';
 import { openModal } from '../../reducers/uiActions';
 import { setActiveEvent } from '../../reducers/calendarActions';
+import AddNewFab from '../ui/AddNewFab';
 
 const localizer = momentLocalizer(moment);
 
@@ -66,6 +67,7 @@ const CalendarScreen = ({
           event: CalendarEvent,
         }}
       />
+      <AddNewFab />
       <Modal />
     </div>
   );
