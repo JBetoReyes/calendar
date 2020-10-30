@@ -18,16 +18,9 @@ import Modal from '../modals/Modal';
 import { openModal } from '../../reducers/uiActions';
 import { setActiveEvent } from '../../reducers/calendarActions';
 import AddNewFab from '../ui/AddNewFab';
+import DeleteFab from '../ui/DeleteFab';
 
 const localizer = momentLocalizer(moment);
-
-const events: IAppCalendarEvent[] = [
-  {
-    title: 'birthday',
-    start: moment().toDate(),
-    end: moment().add(2, 'hours').toDate(),
-  },
-];
 
 const mapStateToProps = (state: IStoreState) => ({
   calendar: state.calendar,
@@ -77,6 +70,7 @@ const CalendarScreen = (props: MyProps): JSX.Element => {
           event: CalendarEvent,
         }}
       />
+      <DeleteFab />
       <AddNewFab />
       <Modal />
     </div>
@@ -85,7 +79,6 @@ const CalendarScreen = (props: MyProps): JSX.Element => {
 
 CalendarScreen.propTypes = {};
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export default connect<
   MapStateToPropsType,
   DispatchPropsType,
