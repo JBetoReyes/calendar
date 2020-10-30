@@ -1,8 +1,19 @@
-import { CalendarActionsTypes, SET_ACTIVE_EVENT } from './calendarActions';
+import moment from 'moment';
+import {
+  ADD_ACTIVE_EVENT,
+  CalendarActionsTypes,
+  SET_ACTIVE_EVENT,
+} from './calendarActions';
 import { ICalendarState } from './calendarModel';
 
 const initialValue: ICalendarState = {
-  events: [],
+  events: [
+    {
+      title: 'birthday',
+      start: moment().toDate(),
+      end: moment().add(2, 'hours').toDate(),
+    },
+  ],
   activeEvent: null,
 };
 
@@ -17,6 +28,11 @@ const CalendarReducer = (
         activeEvent: {
           ...action.payload,
         },
+      };
+    case ADD_ACTIVE_EVENT:
+      return {
+        ...state,
+        events: [...state.events, action.payload],
       };
     default:
       return state;
