@@ -2,6 +2,7 @@ import moment from 'moment';
 import {
   ADD_ACTIVE_EVENT,
   CalendarActionsTypes,
+  DELETE_EVENT,
   SET_ACTIVE_EVENT,
   UPDATE_EVENT,
 } from './calendarActions';
@@ -48,6 +49,11 @@ const CalendarReducer = (
             ...event,
           };
         }),
+      };
+    case DELETE_EVENT:
+      return {
+        activeEvent: null,
+        events: state.events.filter((event) => event.id !== action.payload),
       };
     default:
       return state;
