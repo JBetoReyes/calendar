@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -36,6 +36,7 @@ const mapDispatchToProps = {
 
 const mapStateToProps = (state: IStoreState) => ({
   isOpen: state.ui.modalOpen,
+  activeEvent: state.calendar.activeEvent,
 });
 
 type DispatchPropsType = typeof mapDispatchToProps;
@@ -45,21 +46,35 @@ type OwnPropsType = Record<string, any>;
 type PropsType = StatePropsType & DispatchPropsType & OwnPropsType;
 
 const Modal = (props: OwnPropsType) => {
-  const {
-    isOpen,
-    closeModal: dispatchCloseModal,
-    addActiveEvent: dispatchAddActiveEvent,
-  } = props as PropsType;
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(initialEndDate.toDate());
-  const [isTitleValid, setIsTitleValid] = useState(true);
-  const [form, setForm] = useState({
+  const newEvent = {
     title: '',
     notes: '',
     startDate,
     endDate,
-  });
+  };
+  const {
+    isOpen,
+    activeEvent,
+    closeModal: dispatchCloseModal,
+    addActiveEvent: dispatchAddActiveEvent,
+  } = props as PropsType;
+  const [isTitleValid, setIsTitleValid] = useState(true);
+  const [form, setForm] = useState(newEvent);
   const { title, notes, startDate: start, endDate: end } = form;
+  useEffect(() => {
+    if (activeEvent) {
+      setForm({
+        title: activeEvent.title as string,
+        notes: activeEvent.notes as string,
+        startDate: activeEvent.start as Date,
+        endDate: activeEvent.end as Date,
+      });
+    } else {
+      setForm(newEvent);
+    }
+  }, [activeEvent, newEvent]);
   const handleCloseModal = () => {
     dispatchCloseModal();
   };
@@ -83,7 +98,7 @@ const Modal = (props: OwnPropsType) => {
       Swal.fire('Error', 'The end date cannot be before the start date');
       return;
     }
-    if (title.length < 2) {
+    if (title && title.length < 2) {
       setIsTitleValid(false);
       return;
     }

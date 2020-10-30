@@ -10,6 +10,7 @@ const initialValue: ICalendarState = {
   events: [
     {
       title: 'birthday',
+      notes: '',
       start: moment().toDate(),
       end: moment().add(2, 'hours').toDate(),
     },
