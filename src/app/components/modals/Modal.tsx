@@ -2,17 +2,17 @@
 /* eslint-disable jsx-a11y/label-has-associated-control */
 import React, { useState } from 'react';
 import ReactModal from 'react-modal';
-import PropTypes from 'prop-types';
 import { faSave } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import { AppChangeEvent, AppSubmitEvent } from 'src/typings/htmlEvents';
 import Swal from 'sweetalert2';
-import './Modal.scss';
 import { connect } from 'react-redux';
 import { IStoreState } from 'src/app/store/storeModel';
 import { closeModal } from '../../reducers/uiActions';
+import { addActiveEvent } from '../../reducers/calendarActions';
+import './Modal.scss';
 
 const customStyles = {
   content: {
@@ -31,6 +31,7 @@ const initialEndDate = now.clone().add(1, 'hours');
 
 const mapDispatchToProps = {
   closeModal,
+  addActiveEvent,
 };
 
 const mapStateToProps = (state: IStoreState) => ({
@@ -44,7 +45,11 @@ type OwnPropsType = Record<string, any>;
 type PropsType = StatePropsType & DispatchPropsType & OwnPropsType;
 
 const Modal = (props: OwnPropsType) => {
-  const { isOpen, closeModal: dispatchCloseModal } = props as PropsType;
+  const {
+    isOpen,
+    closeModal: dispatchCloseModal,
+    addActiveEvent: dispatchAddActiveEvent,
+  } = props as PropsType;
   const [startDate, setStartDate] = useState(now.toDate());
   const [endDate, setEndDate] = useState(initialEndDate.toDate());
   const [isTitleValid, setIsTitleValid] = useState(true);
@@ -56,7 +61,6 @@ const Modal = (props: OwnPropsType) => {
   });
   const { title, notes, startDate: start, endDate: end } = form;
   const handleCloseModal = () => {
-    // setIsOpen(false);
     dispatchCloseModal();
   };
   const handleStartDateChange = (e: Date) => {
@@ -76,12 +80,22 @@ const Modal = (props: OwnPropsType) => {
     const momentStart = moment(start);
     const momentEnd = moment(end);
     if (momentStart.isSameOrAfter(momentEnd)) {
-      return Swal.fire('Error', 'The end date cannot be before the start date');
+      Swal.fire('Error', 'The end date cannot be before the start date');
+      return;
     }
     if (title.length < 2) {
-      return setIsTitleValid(false);
+      setIsTitleValid(false);
+      return;
     }
     setIsTitleValid(true);
+    dispatchAddActiveEvent({
+      title: form.title,
+      notes: form.notes,
+      start: form.startDate,
+      end: form.endDate,
+      id: new Date().getDate().toString(),
+    });
+    dispatchCloseModal();
   };
   return (
     <ReactModal
@@ -156,7 +170,6 @@ const Modal = (props: OwnPropsType) => {
         </div>
 
         <button type="submit" className="btn btn-outline-primary btn-block">
-          {/* <i className="far fa-save" /> */}
           <FontAwesomeIcon icon={faSave} />
           <span> Save</span>
         </button>
