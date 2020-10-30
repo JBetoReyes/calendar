@@ -11,7 +11,11 @@ import Swal from 'sweetalert2';
 import { connect } from 'react-redux';
 import { IStoreState } from 'src/app/store/storeModel';
 import { closeModal } from '../../reducers/uiActions';
-import { addActiveEvent } from '../../reducers/calendarActions';
+import {
+  setActiveEvent,
+  addActiveEvent,
+  updateEvent,
+} from '../../reducers/calendarActions';
 import './Modal.scss';
 
 const customStyles = {
@@ -32,6 +36,8 @@ const initialEndDate = now.clone().add(1, 'hours');
 const mapDispatchToProps = {
   closeModal,
   addActiveEvent,
+  setActiveEvent,
+  updateEvent,
 };
 
 const mapStateToProps = (state: IStoreState) => ({
@@ -59,6 +65,7 @@ const Modal = (props: OwnPropsType) => {
     activeEvent,
     closeModal: dispatchCloseModal,
     addActiveEvent: dispatchAddActiveEvent,
+    updateEvent: dispatchUpdateEvent,
   } = props as PropsType;
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [form, setForm] = useState(newEvent);
@@ -74,7 +81,7 @@ const Modal = (props: OwnPropsType) => {
     } else {
       setForm(newEvent);
     }
-  }, [activeEvent, newEvent]);
+  }, [activeEvent, setForm]);
   const handleCloseModal = () => {
     dispatchCloseModal();
   };
@@ -103,13 +110,23 @@ const Modal = (props: OwnPropsType) => {
       return;
     }
     setIsTitleValid(true);
-    dispatchAddActiveEvent({
-      title: form.title,
-      notes: form.notes,
-      start: form.startDate,
-      end: form.endDate,
-      id: new Date().getDate().toString(),
-    });
+    if (activeEvent) {
+      dispatchUpdateEvent({
+        title: form.title,
+        notes: form.notes,
+        start: form.startDate,
+        end: form.endDate,
+        id: activeEvent.id,
+      });
+    } else {
+      dispatchAddActiveEvent({
+        title: form.title,
+        notes: form.notes,
+        start: form.startDate,
+        end: form.endDate,
+        id: new Date().getDate().toString(),
+      });
+    }
     dispatchCloseModal();
   };
   return (

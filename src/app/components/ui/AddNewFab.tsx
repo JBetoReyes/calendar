@@ -5,15 +5,21 @@ import { connect } from 'react-redux';
 import { IStoreState } from 'src/app/store/storeModel';
 import { AppClickEvent } from 'src/typings/htmlEvents';
 import { openModal } from '../../reducers/uiActions';
+import { setActiveEvent } from '../../reducers/calendarActions';
 import './AddNewFab.scss';
 
 const mapDispatchToProps = {
   openModal,
+  setActiveEvent,
 };
 type DispatchPropsType = typeof mapDispatchToProps;
 type PropsType = DispatchPropsType;
-const AddNewFab = ({ openModal: dispatchOpenModal }: PropsType) => {
+const AddNewFab = ({
+  openModal: dispatchOpenModal,
+  setActiveEvent: dispatchSetActiveEvent,
+}: PropsType) => {
   const handleButtonClick = (e: AppClickEvent) => {
+    dispatchSetActiveEvent(null);
     dispatchOpenModal();
   };
   return (
