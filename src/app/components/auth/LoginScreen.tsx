@@ -7,7 +7,9 @@ import { IStoreState } from '../../store/storeModel';
 import { AppSubmitEvent } from 'src/typings/htmlEvents';
 import './LoginScreen.scss';
 
-type LoginUserType = Pick<IAppUser, 'email' | 'password'>;
+type LoginUserType = Pick<IAppUser, 'email'> & {
+  password: string,
+};
 
 const mapDispatchToProps = {
   startLogin: startLogin
@@ -112,7 +114,7 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
 
 LoginScreen.propTypes = {};
 
-export default connect<null, MapDispatchToPropsType, null, IStoreState>(
+export default connect<null, MapDispatchToPropsType, MyProps, IStoreState>(
   null,
   mapDispatchToProps,
 )(LoginScreen);

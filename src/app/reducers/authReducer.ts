@@ -5,6 +5,7 @@ const initialValue: IAuthState = {
   checking: true,
   uid: null,
   name: null,
+  email: null,
 };
 
 const AuthReducer = (
@@ -12,6 +13,11 @@ const AuthReducer = (
   action: AuthActionsType,
 ): IAuthState => {
   switch (action.type) {
+    case '[AUTH] Login.':
+      return {
+        ...state,
+        ...action.payload,
+      };
     default:
       return state;
   }

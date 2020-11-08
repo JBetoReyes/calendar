@@ -1,7 +1,12 @@
+import {ThunkAction} from 'redux-thunk';
+import {IAppUser} from '../components/auth/UserModel';
+import {appFetch} from '../helpers/fetch';
+import {IStoreState} from '../store/storeModel';
+
 export const AUTH_CHECKING = '[AUTH] Checking login state.';
 export const AUTH_CHECKED = '[AUTH] Checked.';
 export const START_LOGIN = '[AUTH] Start login.';
-export const LOGIN = '[AUTH] login.';
+export const LOGIN = '[AUTH] Login.';
 export const START_REGISTER = '[AUTH] Start register.';
 export const TOKEN_RENEW = '[AUTH] Token renew.';
 export const LOGOUT = '[AUTH] Logout.';
@@ -18,7 +23,16 @@ interface IStartLogin {
   type: typeof START_LOGIN;
 }
 
-export type AuthActionsType = IAuthChecking | IAuthCheckingFinish | IStartLogin;
+interface ILogin {
+  type: typeof LOGIN;
+  payload: IAppUser;
+}
+
+export type AuthActionsType =
+  | IAuthChecking
+  | IAuthCheckingFinish
+  | IStartLogin
+  | ILogin;
 
 export const startCheckAuth = (): AuthActionsType => {
   return {
@@ -32,12 +46,32 @@ export const authChecked = (): AuthActionsType => {
   };
 };
 
-export const startLogin = async (
+export const startLogin = (
   email: string,
   password: string,
-): Promise<AuthActionsType> => {
-  console.log(email, password);
+): ThunkAction<void, IStoreState, void, AuthActionsType> => {
+  return async (dispatch) => {
+    const resp = await appFetch('auth', 'POST', {email, password});
+    const body = await resp?.json();
+    if (body.ok) {
+      localStorage.setItem('token', body.token);
+      localStorage.setItem('token-init-date', `${new Date().getTime()}`);
+      dispatch(
+        login({
+          uid: body.id,
+          name: body.name,
+          email: body.email,
+        }),
+      );
+    }
+  };
+};
+
+export const login = (
+  payload: Pick<IAppUser, 'uid' | 'name' | 'email'>,
+): AuthActionsType => {
   return {
-    type: START_LOGIN,
+    type: LOGIN,
+    payload,
   };
 };
