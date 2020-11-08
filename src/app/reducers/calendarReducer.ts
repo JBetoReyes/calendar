@@ -6,7 +6,7 @@ import {
   SET_ACTIVE_EVENT,
   UPDATE_EVENT,
 } from './calendarActions';
-import { ICalendarState } from './calendarModel';
+import {ICalendarState} from './calendarModel';
 
 const initialValue: ICalendarState = {
   events: [

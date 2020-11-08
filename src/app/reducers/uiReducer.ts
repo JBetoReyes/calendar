@@ -1,5 +1,5 @@
-import { CLOSE_MODAL, OPEN_MODAL, UIActionsTypes } from './uiActions';
-import { IUIState } from './uiModel';
+import {CLOSE_MODAL, OPEN_MODAL, UIActionsTypes} from './uiActions';
+import {IUIState} from './uiModel';
 
 const initialValue: IUIState = {
   modalOpen: false,

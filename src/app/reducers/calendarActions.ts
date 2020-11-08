@@ -1,4 +1,4 @@
-import { IAppCalendarEvent } from '../components/calendar/CalendarModel';
+import {IAppCalendarEvent} from '../components/calendar/CalendarModel';
 
 export const SET_ACTIVE_EVENT = '[CALENDAR] Set Active Event';
 export const ADD_ACTIVE_EVENT = '[CALENDAR] Add Active Event';
