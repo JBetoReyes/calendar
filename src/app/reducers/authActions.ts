@@ -14,7 +14,11 @@ interface IAuthCheckingFinish {
   type: typeof AUTH_CHECKED;
 }
 
-export type AuthActionsType = IAuthChecking | IAuthCheckingFinish;
+interface IStartLogin {
+  type: typeof START_LOGIN;
+}
+
+export type AuthActionsType = IAuthChecking | IAuthCheckingFinish | IStartLogin;
 
 export const startCheckAuth = (): AuthActionsType => {
   return {
@@ -25,5 +29,15 @@ export const startCheckAuth = (): AuthActionsType => {
 export const authChecked = (): AuthActionsType => {
   return {
     type: AUTH_CHECKED,
+  };
+};
+
+export const startLogin = async (
+  email: string,
+  password: string,
+): Promise<AuthActionsType> => {
+  console.log(email, password);
+  return {
+    type: START_LOGIN,
   };
 };

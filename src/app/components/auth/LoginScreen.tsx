@@ -1,26 +1,59 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { startLogin } from '../../reducers/authActions';
+import useForm from '../../hooks/useForm';
+import { IAppUser } from './UserModel';
+import { IStoreState } from '../../store/storeModel';
+import { AppSubmitEvent } from 'src/typings/htmlEvents';
 import './LoginScreen.scss';
 
-export const LoginScreen = (): JSX.Element => {
+type LoginUserType = Pick<IAppUser, 'email' | 'password'>;
+
+const mapDispatchToProps = {
+  startLogin: startLogin
+};
+
+type MapDispatchToPropsType = typeof mapDispatchToProps;
+
+type MyProps = Record<string, any>;
+type Props = MyProps & MapDispatchToPropsType;
+
+export const LoginScreen = (props: MyProps): JSX.Element => {
+  const {formData, handleChange} = useForm<LoginUserType>({
+    email: '',
+    password: '',
+  });
+  const {email: loginEmail, password: loginPassword} = formData;
+  const {startLogin: dispatchStartLogin} = props as Props;
+  const handleLogin = (e: AppSubmitEvent) => {
+    e.preventDefault();
+    dispatchStartLogin(loginEmail, loginPassword);
+  }
   return (
     <div className="container">
       <div className="row">
         <div className="login-container">
           <div className="col-md-6 login-form-1 h-75">
-            <h3>Ingreso</h3>
-            <form>
+            <h3>Login</h3>
+            <form onSubmit={handleLogin}>
               <div className="form-group">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Correo"
+                  placeholder="Email"
+                  name="email"
+                  value={loginEmail}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="Contraseña"
+                  placeholder="Password"
+                  name='password'
+                  value={loginPassword}
+                  onChange={handleChange}
                 />
               </div>
               <div className="form-group">
@@ -30,27 +63,27 @@ export const LoginScreen = (): JSX.Element => {
           </div>
 
           <div className="col-md-6 login-form-2 h-75">
-            <h3>Registro</h3>
+            <h3>Register</h3>
             <form>
               <div className="form-group">
                 <input
                   type="text"
                   className="form-control"
-                  placeholder="Nombre"
+                  placeholder="Name"
                 />
               </div>
               <div className="form-group">
                 <input
                   type="email"
                   className="form-control"
-                  placeholder="Correo"
+                  placeholder="Email"
                 />
               </div>
               <div className="form-group">
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="Contraseña"
+                  placeholder="Password"
                 />
               </div>
 
@@ -58,7 +91,7 @@ export const LoginScreen = (): JSX.Element => {
                 <input
                   type="password"
                   className="form-control"
-                  placeholder="Repita la contraseña"
+                  placeholder="Confirm your password"
                 />
               </div>
 
@@ -66,7 +99,7 @@ export const LoginScreen = (): JSX.Element => {
                 <input
                   type="submit"
                   className="btnSubmit"
-                  value="Crear cuenta"
+                  value="Register"
                 />
               </div>
             </form>
@@ -79,4 +112,7 @@ export const LoginScreen = (): JSX.Element => {
 
 LoginScreen.propTypes = {};
 
-export default LoginScreen;
+export default connect<null, MapDispatchToPropsType, null, IStoreState>(
+  null,
+  mapDispatchToProps,
+)(LoginScreen);
