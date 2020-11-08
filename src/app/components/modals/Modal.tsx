@@ -1,16 +1,16 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import ReactModal from 'react-modal';
-import { faSave } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faSave} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
-import { AppChangeEvent, AppSubmitEvent } from 'src/typings/htmlEvents';
+import {AppChangeEvent, AppSubmitEvent} from 'src/typings/htmlEvents';
 import Swal from 'sweetalert2';
-import { connect } from 'react-redux';
-import { IStoreState } from 'src/app/store/storeModel';
-import { closeModal } from '../../reducers/uiActions';
+import {connect} from 'react-redux';
+import {IStoreState} from 'src/app/store/storeModel';
+import {closeModal} from '../../reducers/uiActions';
 import {
   setActiveEvent,
   addActiveEvent,
@@ -69,7 +69,7 @@ const Modal = (props: OwnPropsType) => {
   } = props as PropsType;
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [form, setForm] = useState(newEvent);
-  const { title, notes, startDate: start, endDate: end } = form;
+  const {title, notes, startDate: start, endDate: end} = form;
   useEffect(() => {
     if (activeEvent) {
       setForm({
@@ -91,7 +91,7 @@ const Modal = (props: OwnPropsType) => {
   const handleEndDateChange = (e: Date) => {
     setEndDate(e);
   };
-  const handleInputChange = ({ target }: AppChangeEvent) => {
+  const handleInputChange = ({target}: AppChangeEvent) => {
     setForm((formData) => ({
       ...formData,
       [target.name]: target.value,
@@ -139,7 +139,7 @@ const Modal = (props: OwnPropsType) => {
       className="modal"
       overlayClassName="modal-background"
     >
-      <h1> New Event </h1>
+      <h1>{activeEvent ? 'Edit Event' : 'New Event'}</h1>
       <hr />
       <form className="container" onSubmit={handleSubmit}>
         <div className="form-group">
