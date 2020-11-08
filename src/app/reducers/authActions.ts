@@ -1,4 +1,5 @@
 import {ThunkAction} from 'redux-thunk';
+import Swal from 'sweetalert2';
 import {IAppUser} from '../components/auth/UserModel';
 import {appFetch} from '../helpers/fetch';
 import {IStoreState} from '../store/storeModel';
@@ -63,6 +64,8 @@ export const startLogin = (
           email: body.email,
         }),
       );
+    } else {
+      Swal.fire('Error', body.msg, 'error');
     }
   };
 };
