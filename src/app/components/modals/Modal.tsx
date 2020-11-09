@@ -13,7 +13,7 @@ import {IStoreState} from 'src/app/store/storeModel';
 import {closeModal} from '../../reducers/uiActions';
 import {
   setActiveEvent,
-  addActiveEvent,
+  startAddActiveEvent,
   updateEvent,
 } from '../../reducers/calendarActions';
 import './Modal.scss';
@@ -35,7 +35,7 @@ const initialEndDate = now.clone().add(1, 'hours');
 
 const mapDispatchToProps = {
   closeModal,
-  addActiveEvent,
+  startAddActiveEvent,
   setActiveEvent,
   updateEvent,
 };
@@ -64,7 +64,7 @@ const Modal = (props: OwnPropsType) => {
     isOpen,
     activeEvent,
     closeModal: dispatchCloseModal,
-    addActiveEvent: dispatchAddActiveEvent,
+    startAddActiveEvent: dispatchStartAddActiveEvent,
     updateEvent: dispatchUpdateEvent,
   } = props as PropsType;
   const [isTitleValid, setIsTitleValid] = useState(true);
@@ -119,12 +119,11 @@ const Modal = (props: OwnPropsType) => {
         id: activeEvent.id,
       });
     } else {
-      dispatchAddActiveEvent({
+      dispatchStartAddActiveEvent({
         title: form.title,
         notes: form.notes,
         start: form.startDate,
         end: form.endDate,
-        id: new Date().getDate().toString(),
       });
     }
     dispatchCloseModal();
