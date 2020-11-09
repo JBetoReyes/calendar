@@ -1,7 +1,7 @@
 import {ThunkAction} from 'redux-thunk';
 import Swal from 'sweetalert2';
 import {IAppUser} from '../components/auth/UserModel';
-import {appFetch} from '../helpers/fetch';
+import {appFetch, appFetchWithToken} from '../helpers/fetch';
 import {IStoreState} from '../store/storeModel';
 
 export const AUTH_CHECKING = '[AUTH] Checking login state.';
@@ -110,6 +110,31 @@ export const startRegister = (
     } else {
       Swal.fire('Error', body.msg, 'error');
     }
-    console.log('body ', body);
+  };
+};
+
+export const renewToken = (): ThunkAction<
+  void,
+  IStoreState,
+  void,
+  AuthActionsType
+> => {
+  return async (dispatch) => {
+    const response = await appFetchWithToken('auth/renew');
+    const body = await response?.json();
+    if (body.ok) {
+      localStorage.setItem('token', body.token);
+      localStorage.setItem('token-init-date', `${new Date().getTime()}`);
+      dispatch(
+        login({
+          uid: body.id,
+          name: body.name,
+          email: body.email,
+        }),
+      );
+    } else {
+      Swal.fire('Error', body.msg, 'error');
+      dispatch(authChecked());
+    }
   };
 };

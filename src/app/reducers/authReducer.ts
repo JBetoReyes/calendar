@@ -17,6 +17,12 @@ const AuthReducer = (
       return {
         ...state,
         ...action.payload,
+        checking: false,
+      };
+    case '[AUTH] Checked.':
+      return {
+        ...state,
+        checking: false,
       };
     default:
       return state;
