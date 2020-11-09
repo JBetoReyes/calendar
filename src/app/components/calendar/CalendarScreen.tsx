@@ -61,7 +61,6 @@ const CalendarScreen = (props: MyProps): JSX.Element => {
     slots: Date[] | string[];
     action: 'select' | 'click' | 'doubleClick';
   }) => {
-    console.log('on select slot');
     dispatchSetActiveEvent(null);
   };
   return (
