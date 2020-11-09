@@ -1,18 +1,27 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { startLogin } from '../../reducers/authActions';
+import { startLogin, startRegister } from '../../reducers/authActions';
 import useForm from '../../hooks/useForm';
-import { IAppUser } from './UserModel';
 import { IStoreState } from '../../store/storeModel';
 import { AppSubmitEvent } from 'src/typings/htmlEvents';
 import './LoginScreen.scss';
+import Swal from 'sweetalert2';
 
-type LoginUserType = Pick<IAppUser, 'email'> & {
-  password: string,
-};
+type LoginUserType = {
+  lEmail: string;
+  lPassword: string;
+}
+
+type RegisterUserType = {
+  rName: string;
+  rEmail: string;
+  rPassword: string;
+  rConfirmPassword: string;
+}
 
 const mapDispatchToProps = {
-  startLogin: startLogin
+  startLogin,
+  startRegister
 };
 
 type MapDispatchToPropsType = typeof mapDispatchToProps;
@@ -21,15 +30,30 @@ type MyProps = Record<string, any>;
 type Props = MyProps & MapDispatchToPropsType;
 
 export const LoginScreen = (props: MyProps): JSX.Element => {
-  const {formData, handleChange} = useForm<LoginUserType>({
-    email: '',
-    password: '',
+  const {formData: formDataLogin, handleChange: handleLoginChange} = useForm<LoginUserType>({
+    lEmail: '',
+    lPassword: '',
   });
-  const {email: loginEmail, password: loginPassword} = formData;
-  const {startLogin: dispatchStartLogin} = props as Props;
+  const {lEmail, lPassword} = formDataLogin;
+  const {formData: formDataRegister, handleChange: handleRegisterChange} = useForm<RegisterUserType>({
+    rName: '',
+    rEmail: '',
+    rPassword: '',
+    rConfirmPassword: '',
+  });
+  const {rName, rEmail, rPassword, rConfirmPassword} = formDataRegister;
+  const {startLogin: dispatchStartLogin, startRegister: dispatchStartRegister} = props as Props;
   const handleLogin = (e: AppSubmitEvent) => {
     e.preventDefault();
-    dispatchStartLogin(loginEmail, loginPassword);
+    dispatchStartLogin(lEmail, lPassword);
+  }
+  const handelRegister = (e: AppSubmitEvent) => {
+    e.preventDefault();
+    if (rPassword === rConfirmPassword) {
+      dispatchStartRegister(rName, rEmail, rPassword);
+    } else {
+      Swal.fire('Error', 'Password should match.', 'error');
+    }
   }
   return (
     <div className="container">
@@ -43,9 +67,9 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
                   type="text"
                   className="form-control"
                   placeholder="Email"
-                  name="email"
-                  value={loginEmail}
-                  onChange={handleChange}
+                  name="lEmail"
+                  value={lEmail}
+                  onChange={handleLoginChange}
                 />
               </div>
               <div className="form-group">
@@ -53,9 +77,9 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
                   type="password"
                   className="form-control"
                   placeholder="Password"
-                  name='password'
-                  value={loginPassword}
-                  onChange={handleChange}
+                  name='lPassword'
+                  value={lPassword}
+                  onChange={handleLoginChange}
                 />
               </div>
               <div className="form-group">
@@ -66,12 +90,15 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
 
           <div className="col-md-6 login-form-2 h-75">
             <h3>Register</h3>
-            <form>
+            <form onSubmit={handelRegister}>
               <div className="form-group">
                 <input
                   type="text"
                   className="form-control"
                   placeholder="Name"
+                  name="rName"
+                  value={rName}
+                  onChange={handleRegisterChange}
                 />
               </div>
               <div className="form-group">
@@ -79,6 +106,9 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
                   type="email"
                   className="form-control"
                   placeholder="Email"
+                  name="rEmail"
+                  value={rEmail}
+                  onChange={handleRegisterChange}
                 />
               </div>
               <div className="form-group">
@@ -86,6 +116,9 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
                   type="password"
                   className="form-control"
                   placeholder="Password"
+                  name="rPassword"
+                  value={rPassword}
+                  onChange={handleRegisterChange}
                 />
               </div>
 
@@ -94,6 +127,9 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
                   type="password"
                   className="form-control"
                   placeholder="Confirm your password"
+                  name="rConfirmPassword"
+                  value={rConfirmPassword}
+                  onChange={handleRegisterChange}
                 />
               </div>
 

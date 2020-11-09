@@ -29,11 +29,17 @@ interface ILogin {
   payload: IAppUser;
 }
 
+interface IStartRegister {
+  type: typeof START_REGISTER;
+  payload: Pick<IAppUser, 'name' | 'email'> & {password: string};
+}
+
 export type AuthActionsType =
   | IAuthChecking
   | IAuthCheckingFinish
   | IStartLogin
-  | ILogin;
+  | ILogin
+  | IStartRegister;
 
 export const startCheckAuth = (): AuthActionsType => {
   return {
@@ -76,5 +82,34 @@ export const login = (
   return {
     type: LOGIN,
     payload,
+  };
+};
+
+export const startRegister = (
+  name: string,
+  email: string,
+  password: string,
+): ThunkAction<void, IStoreState, void, AuthActionsType> => {
+  return async (dispatch) => {
+    const response = await appFetch('auth/new', 'POST', {
+      name,
+      email,
+      password,
+    });
+    const body = await response?.json();
+    if (body.ok) {
+      localStorage.setItem('token', body.token);
+      localStorage.setItem('token-init-date', `${new Date().getTime()}`);
+      dispatch(
+        login({
+          uid: body.id,
+          name: body.name,
+          email: body.email,
+        }),
+      );
+    } else {
+      Swal.fire('Error', body.msg, 'error');
+    }
+    console.log('body ', body);
   };
 };
