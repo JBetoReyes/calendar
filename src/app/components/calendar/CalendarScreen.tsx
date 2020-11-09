@@ -43,7 +43,6 @@ const CalendarScreen = (props: MyProps): JSX.Element => {
     setActiveEvent: dispatchSetActiveEvent,
   } = props;
   const {calendar} = props as PropsType;
-  console.log(calendar);
   const storedView = (localStorage.getItem('view') || 'month') as View;
   const [calendarView, setCalendarView] = useState<View>(storedView);
   const onDoubleClick = (e: IAppCalendarEvent) => {
