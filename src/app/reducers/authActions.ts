@@ -60,7 +60,7 @@ export const startLogin = (
   return async (dispatch) => {
     const resp = await appFetch('auth', 'POST', {email, password});
     const body = await resp?.json();
-    if (body.ok) {
+    if (body && body.ok) {
       localStorage.setItem('token', body.token);
       localStorage.setItem('token-init-date', `${new Date().getTime()}`);
       dispatch(
@@ -71,7 +71,8 @@ export const startLogin = (
         }),
       );
     } else {
-      Swal.fire('Error', body.msg, 'error');
+      const msg = body && body.msg ? body.msg : '';
+      Swal.fire('Error', msg, 'error');
     }
   };
 };
@@ -97,7 +98,7 @@ export const startRegister = (
       password,
     });
     const body = await response?.json();
-    if (body.ok) {
+    if (body && body.ok) {
       localStorage.setItem('token', body.token);
       localStorage.setItem('token-init-date', `${new Date().getTime()}`);
       dispatch(
@@ -108,7 +109,8 @@ export const startRegister = (
         }),
       );
     } else {
-      Swal.fire('Error', body.msg, 'error');
+      const msg = body && body.msg ? body.msg : '';
+      Swal.fire('Error', msg, 'error');
     }
   };
 };
@@ -122,7 +124,7 @@ export const renewToken = (): ThunkAction<
   return async (dispatch) => {
     const response = await appFetchWithToken('auth/renew');
     const body = await response?.json();
-    if (body.ok) {
+    if (body && body.ok) {
       localStorage.setItem('token', body.token);
       localStorage.setItem('token-init-date', `${new Date().getTime()}`);
       dispatch(
@@ -133,7 +135,6 @@ export const renewToken = (): ThunkAction<
         }),
       );
     } else {
-      Swal.fire('Error', body.msg, 'error');
       dispatch(authChecked());
     }
   };

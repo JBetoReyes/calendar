@@ -5,7 +5,7 @@ const baseUrl = process.env.API_APP_URL;
 export const appFetch = (endpoint: string, method: MethodCallType = 'GET', data?: any, headers: Record<string, string> = {}) => {
   const url = `${baseUrl}/${endpoint}`;
   if (method === 'GET') {
-    fetch(url,{
+    return fetch(url,{
       method,
       headers,
     });
@@ -24,6 +24,6 @@ export const appFetch = (endpoint: string, method: MethodCallType = 'GET', data?
 export const appFetchWithToken = (endpoint: string, method: MethodCallType = 'GET', data?: any, headers: Record<string, string> = {}) => {
   const token = localStorage.getItem('token');
   if (token) {
-    return appFetch(endpoint, method, data, { ...headers, 'x-token': token})
+    return appFetch(endpoint, method, data, { ...headers, 'x-token': token});
   }
 }
