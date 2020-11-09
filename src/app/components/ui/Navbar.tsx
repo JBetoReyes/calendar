@@ -3,6 +3,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSignInAlt } from '@fortawesome/free-solid-svg-icons';
 import { connect } from 'react-redux';
 import { IStoreState } from '../../store/storeModel';
+import { startLogout } from '../../reducers/authActions';
+import { AppClickEvent } from 'src/typings/htmlEvents';
 
 const mapStateToProps = (state: IStoreState) => {
   return {
@@ -10,19 +12,27 @@ const mapStateToProps = (state: IStoreState) => {
   };
 }
 
+const mapDispatchToProps = {
+  startLogout,
+};
+
 type MapStateToPropsType = ReturnType<typeof mapStateToProps>;
+type MapDispatchToPropsType = typeof mapDispatchToProps;
 type MyProps = Record<string, any>;
-type Props = MyProps & MapStateToPropsType;
+type Props = MyProps & MapStateToPropsType & MapDispatchToPropsType;
 const Navbar = (props: MyProps): JSX.Element => {
-  const { name } = props as Props;
+  const { name, startLogout: dispatchLogOut } = props as Props;
+  const handleLogout = (e: AppClickEvent) => {
+    dispatchLogOut();
+  }
   return (
     <div className="navbar navbar-dark bg-dark mb-4">
       <span className="navbar-brand">{name}</span>
-      <button type="button" className="btn btn-outline-danger">
+      <button type="button" className="btn btn-outline-danger" onClick={handleLogout} >
         <FontAwesomeIcon icon={faSignInAlt} /> <span>exit</span>
       </button>
     </div>
   );
 };
 
-export default connect<MapStateToPropsType, null, MyProps, IStoreState>(mapStateToProps)(Navbar);
+export default connect<MapStateToPropsType, MapDispatchToPropsType, MyProps, IStoreState>(mapStateToProps, mapDispatchToProps)(Navbar);

@@ -24,6 +24,13 @@ const AuthReducer = (
         ...state,
         checking: false,
       };
+    case '[AUTH] Logout.':
+      return {
+        uid: null,
+        name: null,
+        email: null,
+        checking: false,
+      };
     default:
       return state;
   }

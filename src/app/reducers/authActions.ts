@@ -29,6 +29,10 @@ interface ILogin {
   payload: IAppUser;
 }
 
+interface ILogout {
+  type: typeof LOGOUT;
+}
+
 interface IStartRegister {
   type: typeof START_REGISTER;
   payload: Pick<IAppUser, 'name' | 'email'> & {password: string};
@@ -39,6 +43,7 @@ export type AuthActionsType =
   | IAuthCheckingFinish
   | IStartLogin
   | ILogin
+  | ILogout
   | IStartRegister;
 
 export const startCheckAuth = (): AuthActionsType => {
@@ -83,6 +88,24 @@ export const login = (
   return {
     type: LOGIN,
     payload,
+  };
+};
+
+export const startLogout = (): ThunkAction<
+  void,
+  IStoreState,
+  void,
+  AuthActionsType
+> => {
+  return (dispatch) => {
+    localStorage.clear();
+    dispatch(logout());
+  };
+};
+
+export const logout = (): AuthActionsType => {
+  return {
+    type: LOGOUT,
   };
 };
 
