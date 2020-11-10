@@ -1,10 +1,15 @@
 import React from 'react';
-import {Redirect, Route, RouteComponentProps, RouteProps} from 'react-router-dom';
+import {
+  Redirect,
+  Route,
+  RouteComponentProps,
+  RouteProps,
+} from 'react-router-dom';
 
 export type MyProps = {
   isAuthenticated: boolean;
-  component: React.ComponentType<RouteComponentProps>
-}
+  component: React.ComponentType<RouteComponentProps>;
+};
 
 export type Props = MyProps & RouteProps;
 
@@ -20,10 +25,10 @@ const PrivateRoute = ({
     return isAuthenticated ? (
       <Component {...props} />
     ) : (
-      <Redirect to='/login'/>
+      <Redirect to="/login" />
     );
-  }
-  return <Route {...rest} component={componentSwitch} />
-}
+  };
+  return <Route {...rest} component={componentSwitch} />;
+};
 
 export default PrivateRoute;

@@ -19,9 +19,7 @@ type MapStateToPropsType = ReturnType<typeof mapStateToProps>;
 type OwnPropsType = Record<string, any>;
 type PropsType = DispatchPropsType & MapStateToPropsType;
 const DeleteFab = (props: OwnPropsType): JSX.Element => {
-  const {
-    startDeleteEvent: dispatchDeleteEvent,
-  } = props as PropsType;
+  const {startDeleteEvent: dispatchDeleteEvent} = props as PropsType;
   const handleDeleteEvent = (e: AppClickEvent) => {
     dispatchDeleteEvent();
   };
