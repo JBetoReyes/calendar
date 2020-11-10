@@ -1,11 +1,11 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { connect } from 'react-redux';
-import { IStoreState } from 'src/app/store/storeModel';
-import { AppClickEvent } from 'src/typings/htmlEvents';
-import { openModal } from '../../reducers/uiActions';
-import { setActiveEvent } from '../../reducers/calendarActions';
+import {connect} from 'react-redux';
+import {IStoreState} from 'src/app/store/storeModel';
+import {AppClickEvent} from 'src/typings/htmlEvents';
+import {openModal} from '../../reducers/uiActions';
+import {setActiveEvent} from '../../reducers/calendarActions';
 import './AddNewFab.scss';
 
 const mapDispatchToProps = {
