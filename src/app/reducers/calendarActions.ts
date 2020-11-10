@@ -77,7 +77,7 @@ export const startAddActiveEvent = (
       const body = await response?.json();
       dispatch(
         addActiveEvent({
-          id: body.id,
+          id: body.event.id,
           title: event.title,
           notes: event.notes,
           start: event.start,
@@ -139,6 +139,28 @@ export const deleteEvent = (eventId: string): CalendarActionsTypes => {
   return {
     type: DELETE_EVENT,
     payload: eventId,
+  };
+};
+
+export const startDeleteEvent = (): ThunkAction<
+  void,
+  IStoreState,
+  void,
+  CalendarActionsTypes
+> => {
+  return async (dispatch, getState) => {
+    let body;
+    try {
+      const {id: eventId} = getState().calendar
+        .activeEvent as IAppCalendarEvent;
+      const response = await appFetchWithToken(`events/${eventId}`, 'DELETE');
+      body = await response?.json();
+      if (body.ok && eventId) {
+        dispatch(deleteEvent(eventId));
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 };
 
