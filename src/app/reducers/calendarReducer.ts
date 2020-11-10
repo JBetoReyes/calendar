@@ -1,8 +1,8 @@
-import moment from 'moment';
 import {
   ADD_ACTIVE_EVENT,
   CalendarActionsTypes,
   DELETE_EVENT,
+  GET_EVENTS,
   SET_ACTIVE_EVENT,
   UPDATE_EVENT,
 } from './calendarActions';
@@ -46,6 +46,11 @@ const CalendarReducer = (
       return {
         activeEvent: null,
         events: state.events.filter((event) => event.id !== action.payload),
+      };
+    case GET_EVENTS:
+      return {
+        activeEvent: null,
+        events: [...action.payload],
       };
     default:
       return state;
