@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/indent */
 import {ThunkAction} from 'redux-thunk';
 import Swal from 'sweetalert2';
 import {IAppUser} from '../components/auth/UserModel';
@@ -58,6 +59,15 @@ export const authChecked = (): AuthActionsType => {
   };
 };
 
+export const login = (
+  payload: Pick<IAppUser, 'uid' | 'name' | 'email'>,
+): AuthActionsType => {
+  return {
+    type: LOGIN,
+    payload,
+  };
+};
+
 export const startLogin = (
   email: string,
   password: string,
@@ -82,12 +92,9 @@ export const startLogin = (
   };
 };
 
-export const login = (
-  payload: Pick<IAppUser, 'uid' | 'name' | 'email'>,
-): AuthActionsType => {
+export const logout = (): AuthActionsType => {
   return {
-    type: LOGIN,
-    payload,
+    type: LOGOUT,
   };
 };
 
@@ -100,12 +107,6 @@ export const startLogout = (): ThunkAction<
   return (dispatch) => {
     localStorage.clear();
     dispatch(logout());
-  };
-};
-
-export const logout = (): AuthActionsType => {
-  return {
-    type: LOGOUT,
   };
 };
 

@@ -1,12 +1,15 @@
+/* eslint-disable @typescript-eslint/indent */
 import {ThunkAction} from 'redux-thunk';
 import {IAppCalendarEvent} from '../components/calendar/CalendarModel';
 import {appFetchWithToken} from '../helpers/fetch';
+import {sanitizeEvents} from '../helpers/events';
 import {IStoreState} from '../store/storeModel';
 
 export const SET_ACTIVE_EVENT = '[CALENDAR] Set Active Event';
 export const ADD_ACTIVE_EVENT = '[CALENDAR] Add Active Event';
 export const UPDATE_EVENT = '[CALENDAR] Update Event';
 export const DELETE_EVENT = '[CALENDAR] Delete Event';
+export const GET_EVENTS = '[CALENDAR] Get Events';
 
 interface ISetActiveEvent {
   type: typeof SET_ACTIVE_EVENT;
@@ -28,17 +31,32 @@ interface IEventDelete {
   payload: string;
 }
 
+interface IGetEvents {
+  type: typeof GET_EVENTS;
+  payload: IAppCalendarEvent[];
+}
+
 export type CalendarActionsTypes =
   | ISetActiveEvent
   | IAddEvent
   | IEventUpdated
-  | IEventDelete;
+  | IEventDelete
+  | IGetEvents;
 
 export const setActiveEvent = (
   event: IAppCalendarEvent | null,
 ): CalendarActionsTypes => {
   return {
     type: SET_ACTIVE_EVENT,
+    payload: event,
+  };
+};
+
+export const addActiveEvent = (
+  event: IAppCalendarEvent,
+): CalendarActionsTypes => {
+  return {
+    type: ADD_ACTIVE_EVENT,
     payload: event,
   };
 };
@@ -76,15 +94,6 @@ export const startAddActiveEvent = (
   };
 };
 
-export const addActiveEvent = (
-  event: IAppCalendarEvent,
-): CalendarActionsTypes => {
-  return {
-    type: ADD_ACTIVE_EVENT,
-    payload: event,
-  };
-};
-
 export const updateEvent = (event: IAppCalendarEvent): CalendarActionsTypes => {
   return {
     type: UPDATE_EVENT,
@@ -96,5 +105,34 @@ export const deleteEvent = (eventId: string): CalendarActionsTypes => {
   return {
     type: DELETE_EVENT,
     payload: eventId,
+  };
+};
+
+export const getEvents = (
+  events: IAppCalendarEvent[],
+): CalendarActionsTypes => {
+  return {
+    type: GET_EVENTS,
+    payload: events,
+  };
+};
+
+export const startGetEvents = (): ThunkAction<
+  void,
+  IStoreState,
+  void,
+  CalendarActionsTypes
+> => {
+  return async (dispatch) => {
+    try {
+      const response = await appFetchWithToken('events', 'GET');
+      const body = await response?.json();
+      const sanitizedEvents = sanitizeEvents(
+        body.events as IAppCalendarEvent[],
+      );
+      dispatch(getEvents(sanitizedEvents));
+    } catch (err) {
+      console.log(err);
+    }
   };
 };

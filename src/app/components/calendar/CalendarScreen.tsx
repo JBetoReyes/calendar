@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable react/require-default-props */
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Calendar as BigCalendar,
   momentLocalizer,
@@ -17,7 +17,7 @@ import CalendarEvent from './CalendarEvent';
 import {IAppCalendarEvent} from './CalendarModel';
 import Modal from '../modals/Modal';
 import {openModal} from '../../reducers/uiActions';
-import {setActiveEvent} from '../../reducers/calendarActions';
+import {setActiveEvent, startGetEvents} from '../../reducers/calendarActions';
 import AddNewFab from '../ui/AddNewFab';
 import DeleteFab from '../ui/DeleteFab';
 
@@ -30,21 +30,26 @@ const mapStateToProps = (state: IStoreState) => ({
 const mapDispatchToProps = {
   openModal,
   setActiveEvent,
+  startGetEvents,
 };
 
 type DispatchPropsType = typeof mapDispatchToProps;
 type MapStateToPropsType = ReturnType<typeof mapStateToProps>;
 
-type MyProps = DispatchPropsType;
+type MyProps = Record<string, any>;
 type PropsType = MyProps & MapStateToPropsType;
 const CalendarScreen = (props: MyProps): JSX.Element => {
   const {
     openModal: dispatchOpenModal,
     setActiveEvent: dispatchSetActiveEvent,
+    startGetEvents: dispatchGetEvents,
   } = props;
   const {calendar} = props as PropsType;
   const storedView = (localStorage.getItem('view') || 'month') as View;
   const [calendarView, setCalendarView] = useState<View>(storedView);
+  useEffect(() => {
+    dispatchGetEvents();
+  }, [dispatchGetEvents]);
   const onDoubleClick = (e: IAppCalendarEvent) => {
     dispatchOpenModal();
   };
@@ -61,6 +66,7 @@ const CalendarScreen = (props: MyProps): JSX.Element => {
     slots: Date[] | string[];
     action: 'select' | 'click' | 'doubleClick';
   }) => {
+    console.log(e);
     dispatchSetActiveEvent(null);
   };
   return (
