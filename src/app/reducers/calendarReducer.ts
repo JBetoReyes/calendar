@@ -9,15 +9,7 @@ import {
 import {ICalendarState} from './calendarModel';
 
 const initialValue: ICalendarState = {
-  events: [
-    {
-      title: 'birthday',
-      notes: '',
-      start: moment().toDate(),
-      end: moment().add(2, 'hours').toDate(),
-      id: `${new Date().getTime()}`,
-    },
-  ],
+  events: [],
   activeEvent: null,
 };
 
