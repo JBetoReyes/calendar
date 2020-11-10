@@ -6,11 +6,10 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {IStoreState} from 'src/app/store/storeModel';
 import {AppClickEvent} from 'src/typings/htmlEvents';
-import {deleteEvent} from '../../reducers/calendarActions';
-import {IAppCalendarEvent} from '../calendar/CalendarModel';
+import {startDeleteEvent} from '../../reducers/calendarActions';
 
 const mapDispatchToProps = {
-  deleteEvent,
+  startDeleteEvent,
 };
 const mapStateToProps = (state: IStoreState) => ({
   activeEvent: state.calendar.activeEvent,
@@ -20,9 +19,11 @@ type MapStateToPropsType = ReturnType<typeof mapStateToProps>;
 type OwnPropsType = Record<string, any>;
 type PropsType = DispatchPropsType & MapStateToPropsType;
 const DeleteFab = (props: OwnPropsType): JSX.Element => {
-  const {activeEvent, deleteEvent: dispatchDeleteEvent} = props as PropsType;
+  const {
+    startDeleteEvent: dispatchDeleteEvent,
+  } = props as PropsType;
   const handleDeleteEvent = (e: AppClickEvent) => {
-    dispatchDeleteEvent((activeEvent as IAppCalendarEvent).id);
+    dispatchDeleteEvent();
   };
   return (
     <button

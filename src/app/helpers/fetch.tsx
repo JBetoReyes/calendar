@@ -24,7 +24,7 @@ export const appFetch = (
       'Content-Type': 'application/json',
       ...headers,
     },
-    body: JSON.stringify(data || ''),
+    body: data ? JSON.stringify(data) : null,
   });
 };
 
