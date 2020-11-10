@@ -1,27 +1,28 @@
+/* eslint-disable prettier/prettier */
 import React from 'react';
-import { connect } from 'react-redux';
-import { startLogin, startRegister } from '../../reducers/authActions';
-import useForm from '../../hooks/useForm';
-import { IStoreState } from '../../store/storeModel';
-import { AppSubmitEvent } from 'src/typings/htmlEvents';
-import './LoginScreen.scss';
 import Swal from 'sweetalert2';
+import {connect} from 'react-redux';
+import {AppSubmitEvent} from 'src/typings/htmlEvents';
+import {startLogin, startRegister} from '../../reducers/authActions';
+import useForm from '../../hooks/useForm';
+import {IStoreState} from '../../store/storeModel';
+import './LoginScreen.scss';
 
 type LoginUserType = {
   lEmail: string;
   lPassword: string;
-}
+};
 
 type RegisterUserType = {
   rName: string;
   rEmail: string;
   rPassword: string;
   rConfirmPassword: string;
-}
+};
 
 const mapDispatchToProps = {
   startLogin,
-  startRegister
+  startRegister,
 };
 
 type MapDispatchToPropsType = typeof mapDispatchToProps;
@@ -30,23 +31,31 @@ type MyProps = Record<string, any>;
 type Props = MyProps & MapDispatchToPropsType;
 
 export const LoginScreen = (props: MyProps): JSX.Element => {
-  const {formData: formDataLogin, handleChange: handleLoginChange} = useForm<LoginUserType>({
+  const {formData: formDataLogin, handleChange: handleLoginChange} = useForm<
+  LoginUserType
+  >({
     lEmail: '',
     lPassword: '',
   });
   const {lEmail, lPassword} = formDataLogin;
-  const {formData: formDataRegister, handleChange: handleRegisterChange} = useForm<RegisterUserType>({
+  const {
+    formData: formDataRegister,
+    handleChange: handleRegisterChange,
+  } = useForm<RegisterUserType>({
     rName: '',
     rEmail: '',
     rPassword: '',
     rConfirmPassword: '',
   });
   const {rName, rEmail, rPassword, rConfirmPassword} = formDataRegister;
-  const {startLogin: dispatchStartLogin, startRegister: dispatchStartRegister} = props as Props;
+  const {
+    startLogin: dispatchStartLogin,
+    startRegister: dispatchStartRegister,
+  } = props as Props;
   const handleLogin = (e: AppSubmitEvent) => {
     e.preventDefault();
     dispatchStartLogin(lEmail, lPassword);
-  }
+  };
   const handelRegister = (e: AppSubmitEvent) => {
     e.preventDefault();
     if (rPassword === rConfirmPassword) {
@@ -54,7 +63,7 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
     } else {
       Swal.fire('Error', 'Password should match.', 'error');
     }
-  }
+  };
   return (
     <div className="container">
       <div className="row">
@@ -77,7 +86,7 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
                   type="password"
                   className="form-control"
                   placeholder="Password"
-                  name='lPassword'
+                  name="lPassword"
                   value={lPassword}
                   onChange={handleLoginChange}
                 />
@@ -134,11 +143,7 @@ export const LoginScreen = (props: MyProps): JSX.Element => {
               </div>
 
               <div className="form-group">
-                <input
-                  type="submit"
-                  className="btnSubmit"
-                  value="Register"
-                />
+                <input type="submit" className="btnSubmit" value="Register" />
               </div>
             </form>
           </div>
