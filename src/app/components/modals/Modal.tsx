@@ -14,7 +14,7 @@ import {closeModal} from '../../reducers/uiActions';
 import {
   setActiveEvent,
   startAddActiveEvent,
-  updateEvent,
+  startUpdateEvent,
 } from '../../reducers/calendarActions';
 import './Modal.scss';
 
@@ -37,7 +37,7 @@ const mapDispatchToProps = {
   closeModal,
   startAddActiveEvent,
   setActiveEvent,
-  updateEvent,
+  startUpdateEvent,
 };
 
 const mapStateToProps = (state: IStoreState) => ({
@@ -65,7 +65,7 @@ const Modal = (props: OwnPropsType) => {
     activeEvent,
     closeModal: dispatchCloseModal,
     startAddActiveEvent: dispatchStartAddActiveEvent,
-    updateEvent: dispatchUpdateEvent,
+    startUpdateEvent: dispatchUpdateEvent,
   } = props as PropsType;
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [form, setForm] = useState(newEvent);

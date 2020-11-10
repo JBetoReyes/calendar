@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/indent */
 import {ThunkAction} from 'redux-thunk';
+import Swal from 'sweetalert2';
 import {IAppCalendarEvent} from '../components/calendar/CalendarModel';
 import {appFetchWithToken} from '../helpers/fetch';
 import {sanitizeEvents} from '../helpers/events';
@@ -98,6 +99,39 @@ export const updateEvent = (event: IAppCalendarEvent): CalendarActionsTypes => {
   return {
     type: UPDATE_EVENT,
     payload: event,
+  };
+};
+
+export const startUpdateEvent = (
+  event: IAppCalendarEvent,
+): ThunkAction<void, IStoreState, void, CalendarActionsTypes> => {
+  return async (dispatch) => {
+    let body;
+    try {
+      const response = await appFetchWithToken(
+        `events/${event.id}`,
+        'PUT',
+        event,
+      );
+      body = await response?.json();
+      if (body.ok) {
+        const [sanitizedEvent] = sanitizeEvents([body.event]);
+        dispatch(
+          updateEvent({
+            title: sanitizedEvent.title,
+            notes: sanitizedEvent.notes,
+            start: sanitizedEvent.start,
+            end: sanitizedEvent.end,
+            id: sanitizedEvent.id,
+          }),
+        );
+      }
+    } catch (err) {
+      if (body && body.ok) {
+        Swal.fire('Error', err, 'error');
+      }
+      console.log(err);
+    }
   };
 };
 
