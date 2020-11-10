@@ -70,8 +70,8 @@ export const startAddActiveEvent = (
       const response = await appFetchWithToken('events', 'POST', {
         title: event.title,
         notes: event.notes || '',
-        start: event.start,
-        end: event.end,
+        start: event.start?.getTime(),
+        end: event.end?.getTime(),
       });
       const body = await response?.json();
       dispatch(

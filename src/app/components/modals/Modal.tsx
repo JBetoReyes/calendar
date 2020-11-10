@@ -87,9 +87,17 @@ const Modal = (props: OwnPropsType) => {
   };
   const handleStartDateChange = (e: Date) => {
     setStartDate(e);
+    setForm({
+      ...form,
+      startDate: e,
+    });
   };
   const handleEndDateChange = (e: Date) => {
     setEndDate(e);
+    setForm({
+      ...form,
+      endDate: e,
+    });
   };
   const handleInputChange = ({target}: AppChangeEvent) => {
     setForm((formData) => ({
@@ -110,6 +118,7 @@ const Modal = (props: OwnPropsType) => {
       return;
     }
     setIsTitleValid(true);
+    console.log('form: ', form);
     if (activeEvent) {
       dispatchUpdateEvent({
         title: form.title,
