@@ -12,4 +12,9 @@ module.exports = {
 
   // Setup Fetch Mock
   setupFiles: ['<rootDir>/setupFetch.ts'],
+
+  // Alias
+  moduleNameMapper: {
+    '\\.(s?css)$': '<rootDir>/__mocks__/styleMock.js',
+  },
 };
