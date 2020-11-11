@@ -2,7 +2,7 @@
 import React from 'react';
 import Swal from 'sweetalert2';
 import {connect} from 'react-redux';
-import {AppSubmitEvent} from 'src/typings/htmlEvents';
+import {AppSubmitEvent} from '../../../typings/htmlEvents';
 import {startLogin, startRegister} from '../../reducers/authActions';
 import useForm from '../../hooks/useForm';
 import {IStoreState} from '../../store/storeModel';

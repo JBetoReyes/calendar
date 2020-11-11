@@ -6,10 +6,11 @@ import {faSave} from '@fortawesome/free-solid-svg-icons';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
-import {AppChangeEvent, AppSubmitEvent} from 'src/typings/htmlEvents';
 import Swal from 'sweetalert2';
+
 import {connect} from 'react-redux';
-import {IStoreState} from 'src/app/store/storeModel';
+import {IStoreState} from '../../store/storeModel';
+import {AppChangeEvent, AppSubmitEvent} from '../../../typings/htmlEvents';
 import {closeModal} from '../../reducers/uiActions';
 import {
   setActiveEvent,
@@ -28,7 +29,10 @@ const customStyles = {
     transform: 'translate(-50%, -50%)',
   },
 };
-ReactModal.setAppElement('#app');
+
+if (process.env.NODE_ENV !== 'test') {
+  ReactModal.setAppElement('#app');
+}
 
 const now = moment().minutes(0).seconds(0).add(1, 'hours');
 const initialEndDate = now.clone().add(1, 'hours');

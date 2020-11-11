@@ -1,6 +1,6 @@
 import {useState} from 'react';
-import {AppFormData} from 'src/typings/hooks';
-import {AppChangeEvent, AppSubmitEvent} from 'src/typings/htmlEvents';
+import {AppFormData} from '../../typings/hooks';
+import {AppChangeEvent} from '../../typings/htmlEvents';
 
 export type HookData<T extends AppFormData> = {
   formData: T;

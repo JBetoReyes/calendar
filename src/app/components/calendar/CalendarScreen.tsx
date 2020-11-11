@@ -9,7 +9,7 @@ import {
 } from 'react-big-calendar';
 import moment from 'moment';
 import {connect} from 'react-redux';
-import {IStoreState} from 'src/app/store/storeModel';
+import {IStoreState} from '../../store/storeModel';
 import Navbar from '../ui/Navbar';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
 import './CalendarScreen.scss';

@@ -3,7 +3,7 @@ import React from 'react';
 import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
 import {faSignInAlt} from '@fortawesome/free-solid-svg-icons';
 import {connect} from 'react-redux';
-import {AppClickEvent} from 'src/typings/htmlEvents';
+import {AppClickEvent} from '../../../typings/htmlEvents';
 import {IStoreState} from '../../store/storeModel';
 import {startLogout} from '../../reducers/authActions';
 
