@@ -64,7 +64,11 @@ export const login = (
 ): AuthActionsType => {
   return {
     type: LOGIN,
-    payload,
+    payload: {
+      uid: payload.uid,
+      name: payload.name,
+      email: payload.email,
+    },
   };
 };
 
