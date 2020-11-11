@@ -3,7 +3,8 @@
 import React, {useEffect} from 'react';
 import {BrowserRouter as Router, Switch} from 'react-router-dom';
 import {connect} from 'react-redux';
-import {IStoreState} from 'src/app/store/storeModel';
+
+import {IStoreState} from '../../store/storeModel';
 import CalendarScreen from '../calendar/CalendarScreen';
 import LoginScreen from '../auth/LoginScreen';
 import {renewToken} from '../../reducers/authActions';
@@ -29,6 +30,9 @@ const AppRouter = (props: MyProps): JSX.Element => {
   useEffect(() => {
     dispatchRenewToken();
   }, [dispatchRenewToken]);
+  if (checking) {
+    return <h5>Waiting...</h5>;
+  }
   return (
     <Router>
       <div className="router-wrapper">
