@@ -4,7 +4,12 @@ import configureStore, {MockStoreEnhanced} from 'redux-mock-store';
 import thunk from 'redux-thunk';
 import Swal from 'sweetalert2';
 
-import {login, startLogin} from '../../src/app/reducers/authActions';
+import {
+  LOGIN,
+  login,
+  startLogin,
+  startRegister,
+} from '../../src/app/reducers/authActions';
 
 Storage.prototype.setItem = jest.fn();
 jest.mock('sweetalert2', () => ({
@@ -18,18 +23,20 @@ describe('authActions', () => {
   beforeEach(() => {
     store = mockStore({});
     (fetch as FetchMock).resetMocks();
+    (localStorage.setItem as jest.Mock).mockRestore();
   });
 
   afterAll(() => {
     jest.resetAllMocks();
   });
 
+  const loginPayload = {
+    id: 'id',
+    name: 'name',
+    email: 'email',
+  };
+
   test('startLogin with a success scenario', async () => {
-    const loginPayload = {
-      id: 'id',
-      name: 'name',
-      email: 'email',
-    };
     (fetch as FetchMock).mockResponseOnce(
       JSON.stringify({
         ok: true,
@@ -68,6 +75,40 @@ describe('authActions', () => {
       'Error',
       'Something went wrong',
       'error',
+    );
+  });
+  test('startRegister', async () => {
+    (fetch as FetchMock).mockResponseOnce(
+      JSON.stringify({
+        ok: true,
+        token: 'test token',
+        'token-init-date': 'init date',
+        ...loginPayload,
+      }),
+    );
+    await store.dispatch(
+      (startRegister(
+        loginPayload.name,
+        loginPayload.email,
+        'test password',
+      ) as unknown) as AnyAction,
+    );
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: LOGIN,
+      payload: {
+        uid: expect.any(String),
+        name: expect.any(String),
+        email: expect.any(String),
+      },
+    });
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token',
+      expect.any(String),
+    );
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token-init-date',
+      expect.any(String),
     );
   });
 });
