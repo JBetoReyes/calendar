@@ -7,6 +7,7 @@ import Swal from 'sweetalert2';
 import {
   LOGIN,
   login,
+  renewToken,
   startLogin,
   startRegister,
 } from '../../src/app/reducers/authActions';
@@ -110,5 +111,36 @@ describe('authActions', () => {
       'token-init-date',
       expect.any(String),
     );
+  });
+
+  test('renew token', async () => {
+    Storage.prototype.getItem = jest.fn().mockReturnValue('test token');
+    (fetch as FetchMock).mockResponseOnce(
+      JSON.stringify({
+        ok: true,
+        token: 'test token',
+        'token-init-date': 'init date',
+        ...loginPayload,
+      }),
+    );
+    await store.dispatch((renewToken() as unknown) as AnyAction);
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token',
+      expect.any(String),
+    );
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token-init-date',
+      expect.any(String),
+    );
+    (localStorage.setItem as jest.Mock).mockRestore();
+    const actions = store.getActions();
+    expect(actions[0]).toEqual({
+      type: LOGIN,
+      payload: {
+        uid: expect.any(String),
+        name: expect.any(String),
+        email: expect.any(String),
+      },
+    });
   });
 });
