@@ -5,6 +5,8 @@ import thunk from 'redux-thunk';
 
 import {login, startLogin} from '../../src/app/reducers/authActions';
 
+Storage.prototype.setItem = jest.fn();
+
 const middlewares = [thunk];
 const mockStore = configureStore(middlewares);
 let store: MockStoreEnhanced;
@@ -12,6 +14,10 @@ describe('authActions', () => {
   beforeEach(() => {
     store = mockStore({});
     (fetch as FetchMock).resetMocks();
+  });
+
+  afterAll(() => {
+    jest.resetAllMocks();
   });
 
   test('startLogin with a success scenario', async () => {
@@ -32,6 +38,14 @@ describe('authActions', () => {
       (startLogin('test@email.com', '123456') as unknown) as AnyAction,
     );
     const actions = store.getActions();
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token',
+      expect.any(String),
+    );
+    expect(localStorage.setItem).toHaveBeenCalledWith(
+      'token-init-date',
+      expect.any(String),
+    );
     expect(actions[0]).toEqual(login({uid: loginPayload.id, ...loginPayload}));
   });
 });
