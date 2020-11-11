@@ -9,4 +9,7 @@ module.exports = {
   // Setup Enzyme
   snapshotSerializers: ['enzyme-to-json/serializer'],
   setupFilesAfterEnv: ['<rootDir>/setupEnzyme.ts'],
+
+  // Setup Fetch Mock
+  setupFiles: ['<rootDir>/setupFetch.ts'],
 };
