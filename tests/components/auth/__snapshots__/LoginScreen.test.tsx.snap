@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Login screen Should match snapshot 1`] = `
+<Provider
+  store={
+    Object {
+      "clearActions": [Function],
+      "dispatch": [MockFunction],
+      "getActions": [Function],
+      "getState": [Function],
+      "replaceReducer": [Function],
+      "subscribe": [Function],
+    }
+  }
+>
+  <Connect(Component)>
+    <Component
+      startLogin={[Function]}
+    >
+      <div
+        className="container"
+      >
+        <div
+          className="row"
+        >
+          <div
+            className="login-container"
+          >
+            <div
+              className="col-md-6 login-form-1 h-75"
+            >
+              <h3>
+                Login
+              </h3>
+              <form
+                onSubmit={[Function]}
+              >
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="form-control"
+                    name="lEmail"
+                    onChange={[Function]}
+                    placeholder="Email"
+                    type="text"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="form-control"
+                    name="lPassword"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="btnSubmit"
+                    type="submit"
+                    value="Login"
+                  />
+                </div>
+              </form>
+            </div>
+            <div
+              className="col-md-6 login-form-2 h-75"
+            >
+              <h3>
+                Register
+              </h3>
+              <form
+                onSubmit={[Function]}
+              >
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="form-control"
+                    name="rName"
+                    onChange={[Function]}
+                    placeholder="Name"
+                    type="text"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="form-control"
+                    name="rEmail"
+                    onChange={[Function]}
+                    placeholder="Email"
+                    type="email"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="form-control"
+                    name="rPassword"
+                    onChange={[Function]}
+                    placeholder="Password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="form-control"
+                    name="rConfirmPassword"
+                    onChange={[Function]}
+                    placeholder="Confirm your password"
+                    type="password"
+                    value=""
+                  />
+                </div>
+                <div
+                  className="form-group"
+                >
+                  <input
+                    className="btnSubmit"
+                    type="submit"
+                    value="Register"
+                  />
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </Component>
+  </Connect(Component)>
+</Provider>
+`;

@@ -49,7 +49,7 @@ describe('AppRouter', () => {
       },
       ui: {
         modalOpen: false,
-      }
+      },
     });
     store.dispatch = jest.fn();
     const wrapper = mount(
