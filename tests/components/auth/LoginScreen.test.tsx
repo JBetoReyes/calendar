@@ -33,6 +33,7 @@ describe('Login screen', () => {
         <LoginScreen />
       </Provider>,
     );
+    jest.clearAllMocks();
   });
   afterAll(() => {
     jest.clearAllMocks();
@@ -52,8 +53,10 @@ describe('Login screen', () => {
   });
   test('Should not dispatch start register', () => {
     wrapper.find('input[name="rPassword"]').simulate('change', {
-      name: 'rPassword',
-      value: '12345678',
+      target: {
+        name: 'rPassword',
+        value: '12345678',
+      },
     });
     wrapper.find('input[name="rConfirmPassword"]').simulate('change', {
       target: {
@@ -68,5 +71,22 @@ describe('Login screen', () => {
       'Password should match.',
       'error',
     );
+  });
+  test('Should dispatch start register', () => {
+    wrapper.find('input[name="rPassword"]').simulate('change', {
+      target: {
+        name: 'rPassword',
+        value: '12345678',
+      },
+    });
+    wrapper.find('input[name="rConfirmPassword"]').simulate('change', {
+      target: {
+        name: 'rConfirmPassword',
+        value: '12345678',
+      },
+    });
+    wrapper.find('.login-form-2 form').simulate('submit');
+    expect(startRegister).toHaveBeenCalledWith('', '', '12345678');
+    expect(Swal.fire).not.toHaveBeenCalled();
   });
 });
