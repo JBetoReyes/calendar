@@ -16,6 +16,7 @@ exports[`Login screen Should match snapshot 1`] = `
   <Connect(Component)>
     <Component
       startLogin={[Function]}
+      startRegister={[Function]}
     >
       <div
         className="container"
