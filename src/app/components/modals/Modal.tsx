@@ -150,6 +150,7 @@ const Modal = (props: OwnPropsType) => {
       contentLabel="Example Modal"
       className="modal"
       overlayClassName="modal-background"
+      ariaHideApp={!(process.env.NODE_ENV === 'test')}
     >
       <h1>{activeEvent ? 'Edit Event' : 'New Event'}</h1>
       <hr />
