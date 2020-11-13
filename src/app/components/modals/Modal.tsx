@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/indent */
 /* eslint-disable jsx-a11y/label-has-associated-control */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactModal from 'react-modal';
-import {faSave} from '@fortawesome/free-solid-svg-icons';
-import {FontAwesomeIcon} from '@fortawesome/react-fontawesome';
+import { faSave } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import DateTimePicker from 'react-datetime-picker';
 import moment from 'moment';
 import Swal from 'sweetalert2';
 
-import {connect} from 'react-redux';
-import {IStoreState} from '../../store/storeModel';
-import {AppChangeEvent, AppSubmitEvent} from '../../../typings/htmlEvents';
-import {closeModal} from '../../reducers/uiActions';
+import { connect } from 'react-redux';
+import { IStoreState } from '../../store/storeModel';
+import { AppChangeEvent, AppSubmitEvent } from '../../../typings/htmlEvents';
+import { closeModal } from '../../reducers/uiActions';
 import {
   setActiveEvent,
   startAddActiveEvent,
@@ -73,7 +73,7 @@ const Modal = (props: OwnPropsType) => {
   } = props as PropsType;
   const [isTitleValid, setIsTitleValid] = useState(true);
   const [form, setForm] = useState(newEvent);
-  const {title, notes, startDate: start, endDate: end} = form;
+  const { title, notes, startDate: start, endDate: end } = form;
   useEffect(() => {
     if (activeEvent) {
       setForm({
@@ -103,7 +103,7 @@ const Modal = (props: OwnPropsType) => {
       endDate: e,
     });
   };
-  const handleInputChange = ({target}: AppChangeEvent) => {
+  const handleInputChange = ({ target }: AppChangeEvent) => {
     setForm((formData) => ({
       ...formData,
       [target.name]: target.value,
@@ -117,12 +117,11 @@ const Modal = (props: OwnPropsType) => {
       Swal.fire('Error', 'The end date cannot be before the start date');
       return;
     }
-    if (title && title.length < 2) {
+    if (!title || title.length < 2) {
       setIsTitleValid(false);
       return;
     }
     setIsTitleValid(true);
-    console.log('form: ', form);
     if (activeEvent) {
       dispatchUpdateEvent({
         title: form.title,
@@ -210,7 +209,7 @@ const Modal = (props: OwnPropsType) => {
             onChange={handleInputChange}
           />
           <small id="emailHelp" className="form-text text-muted">
-            Aditional information
+            Additional information
           </small>
         </div>
 
